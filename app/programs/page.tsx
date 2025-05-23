@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { Button } from '@/components/registry/new-york-v4/ui/button';
 import {
@@ -12,8 +11,6 @@ import { Input } from '@/components/registry/new-york-v4/ui/input';
 import { 
   GraduationCap, 
   Search,
-  Calendar,
-  Building2,
   ExternalLink,
   CheckCircle2,
   XCircle,
@@ -58,6 +55,9 @@ import {
   Badge
 } from "@/components/registry/new-york-v4/ui/badge";
 import Link from 'next/link';
+import Header from '@/components/header/header';
+import { useAppSelector } from '../hooks';
+import { selectTranslations } from '@/store/language/languageSlice';
 
 // Mock data
 const mockPrograms = [
@@ -133,63 +133,8 @@ export default function ProgramsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [levelFilter, setLevelFilter] = useState('all');
-  
-  const translations = {
-    ru: {
-      title: "Реестр образовательных программ ВПО",
-      subtitle: "Просмотр всех аккредитованных образовательных программ ВПО Кыргызстана",
-      searchPlaceholder: "Поиск по названию или коду программы...",
-      toggleFilters: "Фильтры",
-      level: "Уровень",
-      levels: {
-        all: "Все уровни",
-        bachelor: "Бакалавриат",
-        master: "Магистратура",
-        specialist: "Специалитет"
-      },
-      institution: "Образовательная организация",
-      accreditationDate: "Дата аккредитации",
-      expiryDate: "Аккредитована до",
-      status: "Статус",
-      statuses: {
-        active: "Действующая",
-        expired: "Истекла"
-      },
-      code: "Код",
-      programName: "Наименование программы",
-      totalFound: "Найдено программ",
-      details: "Подробнее",
-      filterByInstitution: "Фильтр по организации",
-    },
-    kg: {
-      title: "Жогорку кесиптик билим берүү программаларынын реестри",
-      subtitle: "Кыргызстандын бардык аккредитацияланган билим берүү программаларын көрүү",
-      searchPlaceholder: "Программанын аталышы же коду боюнча издөө...",
-      toggleFilters: "Чыпкалар",
-      level: "Деңгээли",
-      levels: {
-        all: "Бардык деңгээлдер",
-        bachelor: "Бакалавриат",
-        master: "Магистратура",
-        specialist: "Адистик"
-      },
-      institution: "Билим берүү уюму",
-      accreditationDate: "Аккредитация датасы",
-      expiryDate: "Аккредитация мөөнөтү",
-      status: "Статусу",
-      statuses: {
-        active: "Активдүү",
-        expired: "Мөөнөтү бүткөн"
-      },
-      code: "Коду",
-      programName: "Программанын аталышы",
-      totalFound: "Табылган программалар",
-      details: "Кеңири маалымат",
-      filterByInstitution: "Уюм боюнча чыпкалоо",
-    }
-  };
 
-  const t = translations[language];
+  const t = useAppSelector(selectTranslations);
 
   // Filter programs based on search term and level
   const filteredPrograms = mockPrograms.filter(program => {
@@ -218,33 +163,11 @@ export default function ProgramsPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header - would be a shared component in real app */}
-      <header className="bg-blue-700 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <GraduationCap size={32} />
-            <h1 className="text-xl font-bold hidden md:block">НИАРС</h1>
-          </Link>
-          <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-white hover:text-white hover:bg-blue-600"
-              onClick={() => setLanguage(language === 'ru' ? 'kg' : 'ru')}
-            >
-              {language === 'ru' ? 'Кыргызча' : 'Русский'}
-            </Button>
-            <Button variant="outline" className="text-white border-white hover:bg-blue-600">
-              {language === 'ru' ? 'Вход в систему' : 'Тутумга кирүү'}
-            </Button>
-          </div>
-        </div>
-      </header>
-
       {/* Page title */}
       <section className="bg-blue-700 text-white py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">{t.title}</h1>
-          <p className="text-blue-100">{t.subtitle}</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">{t.titleProgramms}</h1>
+          <p className="text-blue-100">{t.subtitleProgramms}</p>
         </div>
       </section>
 
@@ -257,7 +180,7 @@ export default function ProgramsPage() {
               <div className="md:col-span-2 relative">
                 <Input 
                   className="pl-10 py-6"
-                  placeholder={t.searchPlaceholder}
+                  placeholder={t.searchPlaceholderProgramms}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -283,7 +206,7 @@ export default function ProgramsPage() {
                   onClick={() => setShowFilters(!showFilters)}
                 >
                   <SlidersHorizontal className="mr-2 h-4 w-4" />
-                  {t.toggleFilters}
+                  {t.filters}
                 </Button>
               </div>
             </div>

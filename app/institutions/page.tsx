@@ -35,6 +35,9 @@ import {
   SelectValue,
 } from "@/components/registry/new-york-v4/ui/select";
 import Link from 'next/link';
+import Header from '@/components/header/header';
+import { useAppSelector } from '../hooks';
+import { selectTranslations } from '@/store/language/languageSlice';
 
 // Mock data
 const mockInstitutions = [
@@ -82,49 +85,8 @@ const mockInstitutions = [
 export default function InstitutionsPage() {
   const [language, setLanguage] = useState<'ru' | 'kg'>('ru');
   const [searchTerm, setSearchTerm] = useState('');
-  
-  const translations = {
-    ru: {
-      title: "Реестр образовательных организаций",
-      subtitle: "Просмотр всех аккредитованных высших учебных заведений Кыргызстана",
-      searchPlaceholder: "Поиск по названию организации...",
-      filters: "Фильтры",
-      sortBy: "Сортировка",
-      location: "Местонахождение",
-      accreditationDate: "Дата аккредитации",
-      expiryDate: "Срок действия до",
-      programs: "Программы",
-      details: "Подробнее",
-      totalFound: "Найдено организаций",
-      sortOptions: {
-        nameAsc: "Название (А-Я)",
-        nameDesc: "Название (Я-А)",
-        dateDesc: "Сначала новые",
-        dateAsc: "Сначала старые",
-      },
-    },
-    kg: {
-      title: "Билим берүү уюмдарынын реестри",
-      subtitle: "Кыргызстандын аккредитацияланган жогорку окуу жайларын көрүү",
-      searchPlaceholder: "Уюмдун аталышы боюнча издөө...",
-      filters: "Чыпкалар",
-      sortBy: "Иреттөө",
-      location: "Жайгашкан жери",
-      accreditationDate: "Аккредитация датасы",
-      expiryDate: "Жарактуу мөөнөтү",
-      programs: "Программалар",
-      details: "Кеңири маалымат",
-      totalFound: "Табылган уюмдар",
-      sortOptions: {
-        nameAsc: "Аталышы (А-Я)",
-        nameDesc: "Аталышы (Я-А)",
-        dateDesc: "Жаңыларынан баштап",
-        dateAsc: "Эскилеринен баштап",
-      },
-    }
-  };
 
-  const t = translations[language];
+  const t = useAppSelector(selectTranslations);
 
   // Filter institutions based on search term
   const filteredInstitutions = mockInstitutions.filter(inst => 
@@ -138,28 +100,6 @@ export default function InstitutionsPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header - would be a shared component in real app */}
-      <header className="bg-blue-700 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <Building2 size={32} />
-            <h1 className="text-xl font-bold hidden md:block">НИАРС</h1>
-          </Link>
-          <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-white hover:text-white hover:bg-blue-600"
-              onClick={() => setLanguage(language === 'ru' ? 'kg' : 'ru')}
-            >
-              {language === 'ru' ? 'Кыргызча' : 'Русский'}
-            </Button>
-            <Button variant="outline" className="text-white border-white hover:bg-blue-600">
-              {language === 'ru' ? 'Вход в систему' : 'Тутумга кирүү'}
-            </Button>
-          </div>
-        </div>
-      </header>
-
       {/* Page title */}
       <section className="bg-blue-700 text-white py-8">
         <div className="container mx-auto px-4">

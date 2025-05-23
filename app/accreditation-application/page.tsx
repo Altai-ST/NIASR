@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -37,12 +36,13 @@ import { Button } from "@/components/registry/new-york-v4/ui/button";
 import { Input } from "@/components/registry/new-york-v4/ui/input";
 import { Textarea } from "@/components/registry/new-york-v4/ui/textarea";
 import { Checkbox } from "@/components/registry/new-york-v4/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/registry/new-york-v4/ui/radio-group";
 import { Label } from "@/components/registry/new-york-v4/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Loader2, UploadCloud, Download, FileText, Plus, Trash2 } from "lucide-react";
+import { useAppSelector } from "../hooks";
+import { selectTranslations } from "@/store/language/languageSlice";
 
 // Define the form validation schema
 const formSchema = z.object({
@@ -165,18 +165,20 @@ export default function AccreditationApplicationPage() {
     }
   };
 
+  const t = useAppSelector(selectTranslations)
+
   return (
     <div className="container py-8 md:py-12">
-      <h1 className="text-3xl font-bold mb-6 text-center">Анкета для подачи заявки на аккредитацию</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">{t.questionnaireApplicationTitle}</h1>
       <p className="text-gray-500 dark:text-gray-400 text-center mb-8">
-        Заполните все необходимые поля для подачи заявки на аккредитацию образовательной программы или учреждения
+        {t.writeAccredApplicationTitle}
       </p>
 
       <Card className="w-full max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle>Форма заявки на аккредитацию</CardTitle>
+          <CardTitle>{t.formAccredApplicationTitle}</CardTitle>
           <CardDescription>
-            Предоставьте информацию о вашем учебном заведении и требуемом типе аккредитации
+            {t.getInfoAboutOrg}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -185,7 +187,7 @@ export default function AccreditationApplicationPage() {
               <Accordion type="single" collapsible defaultValue="section1" className="w-full">
                 <AccordionItem value="section1">
                   <AccordionTrigger className="text-lg font-medium">
-                    Общая информация
+                    {t.generalInfo}
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4 pt-4">
                     <FormField
@@ -193,9 +195,9 @@ export default function AccreditationApplicationPage() {
                       name="universityName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Название учебного заведения</FormLabel>
+                          <FormLabel>{t.nameUniTitle}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Введите полное название ВУЗа" {...field} />
+                            <Input placeholder={t.writeFullnameUni} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -207,23 +209,23 @@ export default function AccreditationApplicationPage() {
                       name="applicationType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Тип аккредитации</FormLabel>
+                          <FormLabel>{t.typeAccred}</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Выберите тип аккредитации" />
+                                <SelectValue placeholder={t.selectTypeAccred} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="program">Программная аккредитация ВПО</SelectItem>
-                              <SelectItem value="institutional">Институциональная аккредитация ВПО</SelectItem>
+                              <SelectItem value="program">{t.programmAccredVPO}</SelectItem>
+                              <SelectItem value="institutional">{t.uniAccredVPO}</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormDescription>
-                            Выберите тип аккредитации, который вы хотите получить
+                            {t.selectTypeAccredGet}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -237,9 +239,9 @@ export default function AccreditationApplicationPage() {
                           name="programCode"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Шифр образовательной программы</FormLabel>
+                              <FormLabel>{t.cipherEduProgramm}</FormLabel>
                               <FormControl>
-                                <Input placeholder="Например: 580100" {...field} />
+                                <Input placeholder={t.exampleCode} {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -251,9 +253,9 @@ export default function AccreditationApplicationPage() {
                           name="programName"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Название образовательной программы</FormLabel>
+                              <FormLabel>{t.nameEduProgramm}</FormLabel>
                               <FormControl>
-                                <Input placeholder="Название программы" {...field} />
+                                <Input placeholder={t.nameEduProgramm} {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -265,14 +267,14 @@ export default function AccreditationApplicationPage() {
                           name="programLevel"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Уровень программы</FormLabel>
+                              <FormLabel>{t.levelEduProgramm}</FormLabel>
                               <Select
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
                               >
                                 <FormControl>
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Выберите уровень программы" />
+                                    <SelectValue placeholder={t.selectLevelEduProgamm} />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -293,7 +295,7 @@ export default function AccreditationApplicationPage() {
 
                 <AccordionItem value="section2">
                   <AccordionTrigger className="text-lg font-medium">
-                    Лицензия и документы
+                    {t.licenseDoc}
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4 pt-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -302,7 +304,7 @@ export default function AccreditationApplicationPage() {
                         name="licenseNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Номер лицензии</FormLabel>
+                            <FormLabel>{t.licenseNum}</FormLabel>
                             <FormControl>
                               <Input placeholder="LD123456" {...field} />
                             </FormControl>
@@ -316,7 +318,7 @@ export default function AccreditationApplicationPage() {
                         name="licenseDate"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Дата выдачи лицензии</FormLabel>
+                            <FormLabel>{t.dateAtLicense}</FormLabel>
                             <FormControl>
                               <Input type="date" {...field} />
                             </FormControl>
@@ -327,7 +329,7 @@ export default function AccreditationApplicationPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <Label>Загрузка документов</Label>
+                      <Label>{t.uploadDoc}</Label>
                       <div className="border-2 border-dashed rounded-lg p-8 text-center">
                         <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
                         <div className="mt-2">
@@ -335,7 +337,7 @@ export default function AccreditationApplicationPage() {
                             htmlFor="file-upload"
                             className="relative cursor-pointer rounded-md font-medium text-primary hover:text-primary/80"
                           >
-                            <span>Загрузить файлы</span>
+                            <span>{t.uploadedFile}</span>
                             <Input
                               id="file-upload"
                               name="file-upload"
@@ -352,18 +354,18 @@ export default function AccreditationApplicationPage() {
                         <div className="mt-4 flex items-center justify-center gap-2">
                           <Button variant="outline" size="sm">
                             <Download className="mr-2 h-4 w-4" />
-                            Скачать шаблон анкеты
+                            {t.downloadTemplate}
                           </Button>
                           <Button variant="outline" size="sm">
                             <FileText className="mr-2 h-4 w-4" />
-                            Скачать инструкцию
+                            {t.downloadInstuction}
                           </Button>
                         </div>
                       </div>
 
                       {uploadedFiles.length > 0 && (
                         <div className="mt-4">
-                          <h4 className="font-medium mb-2">Загруженные файлы:</h4>
+                          <h4 className="font-medium mb-2">{t.uploadedFile}</h4>
                           <ul className="space-y-2">
                             {uploadedFiles.map((file, index) => (
                               <li key={index} className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 p-2 rounded">
@@ -393,7 +395,7 @@ export default function AccreditationApplicationPage() {
 
                 <AccordionItem value="section3">
                   <AccordionTrigger className="text-lg font-medium">
-                    Контактная информация
+                    {t.contactInfo}
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4 pt-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -402,9 +404,9 @@ export default function AccreditationApplicationPage() {
                         name="contactPersonName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>ФИО контактного лица</FormLabel>
+                            <FormLabel>{t.fioContact}</FormLabel>
                             <FormControl>
-                              <Input placeholder="Иванов Иван Иванович" {...field} />
+                              <Input placeholder="Асанов Асан Асанович" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -416,7 +418,7 @@ export default function AccreditationApplicationPage() {
                         name="contactPersonPosition"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Должность контактного лица</FormLabel>
+                            <FormLabel>{t.positionContact}</FormLabel>
                             <FormControl>
                               <Input placeholder="Руководитель отдела качества" {...field} />
                             </FormControl>
@@ -432,7 +434,7 @@ export default function AccreditationApplicationPage() {
                         name="contactPersonEmail"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>{t.emailContact}</FormLabel>
                             <FormControl>
                               <Input type="email" placeholder="email@example.com" {...field} />
                             </FormControl>
@@ -446,7 +448,7 @@ export default function AccreditationApplicationPage() {
                         name="contactPersonPhone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Телефон</FormLabel>
+                            <FormLabel>{t.phoneContact}</FormLabel>
                             <FormControl>
                               <Input placeholder="+996 XXX XXX XXX" {...field} />
                             </FormControl>
@@ -461,10 +463,10 @@ export default function AccreditationApplicationPage() {
                       name="address"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Юридический адрес</FormLabel>
+                          <FormLabel>{t.legalAddress}</FormLabel>
                           <FormControl>
                             <Textarea 
-                              placeholder="г. Бишкек, ул. Примерная, 123" 
+                              placeholder={t.exampleAddress} 
                               className="resize-none"
                               {...field} 
                             />
@@ -478,7 +480,7 @@ export default function AccreditationApplicationPage() {
 
                 <AccordionItem value="section4">
                   <AccordionTrigger className="text-lg font-medium">
-                    Реквизиты и дополнительная информация
+                    {t.details}
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4 pt-4">
                     <FormField

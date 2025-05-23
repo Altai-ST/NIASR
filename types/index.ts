@@ -83,7 +83,7 @@ export interface EducationalInstitution {
     id: string;
     institutionId: string;
     submissionDate: string;
-    data: Record<string, any>; // Structure depends on questionnaire content
+    data: Record<string, any>;
     status: 'draft' | 'submitted' | 'reviewed';
   }
   
@@ -92,7 +92,7 @@ export interface EducationalInstitution {
     applicationId: string;
     programId?: string;
     submissionDate: string;
-    data: Record<string, any>; // Structure depends on questionnaire content
+    data: Record<string, any>;
     status: 'draft' | 'submitted' | 'reviewed';
   }
   

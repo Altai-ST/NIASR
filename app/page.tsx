@@ -19,54 +19,19 @@ import {
   FileText, 
   ClipboardCheck,
   ArrowRight,
-  Globe
 } from 'lucide-react';
 import Link from 'next/link';
+import Header from '@/components/header/header';
+import { useAppSelector } from './hooks';
+import { selectTranslations } from '@/store/language/languageSlice';
 
 export default function HomePage() {
   const [language, setLanguage] = useState<'ru' | 'kg'>('ru');
-  
-  const translations = {
-    ru: {
-      title: "Реестр образовательных организаций и программ ВПО Кыргызстана",
-      subtitle: "Национальное агентство по аккредитации и рейтингу в сфере образования",
-      searchPlaceholder: "Поиск по названию или коду программы...",
-      institutions: "Образовательные организации",
-      programs: "Образовательные программы",
-      institutionsCount: "Аккредитованные организации",
-      programsCount: "Аккредитованные программы",
-      questionnaire: "Заполнить анкету ВУЗа",
-      accreditation: "Подать заявку на аккредитацию",
-      viewInstitutions: "Просмотреть все организации",
-      viewPrograms: "Просмотреть все программы",
-      language: "Кыргызча",
-      popularPrograms: "Популярные направления",
-      recentlyAccredited: "Недавно аккредитованные",
-      login: "Вход в систему",
-    },
-    kg: {
-      title: "Кыргызстандын жогорку кесиптик билим берүү уюмдарынын жана программаларынын реестри",
-      subtitle: "Билим берүү чөйрөсүндөгү аккредитация жана рейтинг боюнча улуттук агенттик",
-      searchPlaceholder: "Программанын аталышы же коду боюнча издөө...",
-      institutions: "Билим берүү уюмдары",
-      programs: "Билим берүү программалары",
-      institutionsCount: "Аккредитацияланган уюмдар",
-      programsCount: "Аккредитацияланган программалар",
-      questionnaire: "ЖОЖ анкетасын толтуруу",
-      accreditation: "Аккредитацияга өтүнмө бериңиз",
-      viewInstitutions: "Бардык уюмдарды көрүү",
-      viewPrograms: "Бардык программаларды көрүү",
-      language: "Русский",
-      popularPrograms: "Популярдуу багыттар",
-      recentlyAccredited: "Жакында аккредитацияланган",
-      login: "Тутумга кирүү",
-    }
-  };
 
-  const t = translations[language];
+  const t = useAppSelector(selectTranslations);
 
   const mockStats = {
-    institutions: 42,
+    institutions: 3,
     programs: 5,
   };
 
@@ -93,31 +58,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-blue-700 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <GraduationCap size={32} />
-            <a href="/">
-              <h1 className="text-xl font-bold hidden md:block">НИАРС</h1>
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-white hover:text-white hover:bg-blue-600"
-              onClick={() => setLanguage(language === 'ru' ? 'kg' : 'ru')}
-            >
-              <Globe className="mr-2 h-4 w-4" />
-              {t.language}
-            </Button>
-            <a href="/login">
-              <Button variant="outline" className="text-white border-white hover:bg-blue-600">
-                {t.login}
-              </Button>
-            </a>
-          </div>
-        </div>
-      </header>
       <section className="bg-blue-700 text-white pb-16 pt-8">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -127,11 +67,11 @@ export default function HomePage() {
             <div className="relative">
               <Input 
                 className="w-full py-6 pl-12 pr-4 bg-white text-gray-900 rounded-lg"
-                placeholder={t.searchPlaceholder}
+                placeholder={t.searchPlaceholderProgramms}
               />
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
-              <Button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700">
-                {language === 'ru' ? 'Найти' : 'Табуу'}
+              <Button className="absolute right-2 top-2/8 transform -translate-y-1/8 bg-blue-600 hover:bg-blue-700">
+                {t.searchName}
               </Button>
             </div>
           </div>
@@ -213,7 +153,7 @@ export default function HomePage() {
                   <CardFooter className="justify-center">
                   <a href="/programs">
                     <Button variant="outline" className="mt-2">
-                        {t.viewPrograms}
+                        {t.viewProgramms}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                   </a>
@@ -250,13 +190,13 @@ export default function HomePage() {
             </div>
             <div className="flex space-x-6">
               <Link href="#" className="hover:text-blue-300">
-                {language === 'ru' ? 'О нас' : 'Биз жөнүндө'}
+                {t.about}
               </Link>
               <Link href="#" className="hover:text-blue-300">
-                {language === 'ru' ? 'Контакты' : 'Байланыштар'}
+                {t.contacts}
               </Link>
               <Link href="#" className="hover:text-blue-300">
-                {language === 'ru' ? 'Законодательство' : 'Мыйзамдар'}
+                {t.law}
               </Link>
             </div>
           </div>

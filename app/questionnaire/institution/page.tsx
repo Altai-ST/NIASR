@@ -11,44 +11,22 @@ import {
   CardTitle,
 } from '@/components/registry/new-york-v4/ui/card';
 import { 
-  FileText, 
-  GraduationCap,
   Building2,
-  Users,
   Save,
   Send,
   ArrowLeft,
-  Upload
 } from 'lucide-react';
 import Link from 'next/link';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/registry/new-york-v4/ui/form";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/registry/new-york-v4/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/registry/new-york-v4/ui/select";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/registry/new-york-v4/ui/alert";
 import { Label } from "@/components/registry/new-york-v4/ui/label";
+import { useAppSelector } from '@/app/hooks';
+import { selectTranslations } from '@/store/language/languageSlice';
+import LanguageSwitcher from '@/components/languageSwitcher';
 
 export default function InstitutionQuestionnairePage() {
   const [language, setLanguage] = useState<'ru' | 'kg'>('ru');
@@ -73,90 +51,8 @@ export default function InstitutionQuestionnairePage() {
     missionStatementKg: '',
     attachments: [] as string[]
   });
+  const t = useAppSelector(selectTranslations);
   
-  const translations = {
-    ru: {
-      title: "Анкета образовательной организации",
-      subtitle: "Заполните информацию о Вашем учебном заведении для аккредитации",
-      saveAsDraft: "Сохранить как черновик",
-      submit: "Отправить анкету",
-      backToHome: "Вернуться на главную",
-      tabs: {
-        general: "Общая информация",
-        contacts: "Контактные данные",
-        statistics: "Статистика",
-        mission: "Миссия и стратегия",
-        documents: "Документы"
-      },
-      formLabels: {
-        name: "Наименование организации (на русском)",
-        nameKg: "Наименование организации (на кыргызском)",
-        address: "Юридический адрес (на русском)",
-        addressKg: "Юридический адрес (на кыргызском)",
-        regCertificate: "Номер свидетельства о гос. регистрации",
-        taxId: "Идентификационный налоговый номер",
-        director: "ФИО руководителя",
-        directorContact: "Контактные данные руководителя",
-        website: "Веб-сайт",
-        foundationYear: "Год основания",
-        studentCount: "Количество студентов",
-        facultiesCount: "Количество факультетов",
-        programsCount: "Количество образовательных программ",
-        teachersCount: "Количество преподавателей",
-        teachersWithPhD: "Количество преподавателей с ученой степенью",
-        missionStatement: "Миссия организации (на русском)",
-        missionStatementKg: "Миссия организации (на кыргызском)",
-        attachments: "Прикрепить документы"
-      },
-      requiredDocuments: {
-        title: "Необходимые документы",
-        license: "Лицензия на образовательную деятельность",
-        charter: "Устав организации",
-        certificate: "Свидетельство о государственной регистрации",
-        structure: "Организационная структура",
-        uploadBtn: "Загрузить файл"
-      },
-      successMessage: "Анкета успешно сохранена как черновик"
-    },
-    kg: {
-      title: "Билим берүү уюмунун анкетасы",
-      subtitle: "Аккредитация үчүн окуу жайыңыз тууралуу маалыматты толтуруңуз",
-      saveAsDraft: "Долбоор катары сактоо",
-      submit: "Анкетаны жөнөтүү",
-      backToHome: "Башкы бетке кайтуу",
-      tabs: {
-        general: "Жалпы маалымат",
-        contacts: "Байланыш маалыматтары",
-        statistics: "Статистика",
-        mission: "Миссия жана стратегия",
-        documents: "Документтер"
-      },
-      formLabels: {
-        name: "Уюмдун аталышы (орус тилинде)",
-        nameKg: "Уюмдун аталышы (кыргыз тилинде)",
-        address: "Юридикалык дареги (орус тилинде)",
-        addressKg: "Юридикалык дареги (кыргыз тилинде)",
-        regCertificate: "Мамлекеттик каттоо күбөлүгүнүн номери",
-        taxId: "Салык төлөөчүнүн идентификациялык номери",
-        director: "Жетекчинин аты-жөнү",
-        directorContact: "Жетекчигинин байланыш маалыматтары",
-        website: "Веб-сайт",
-        foundationYear: "Негизделген жылы",
-        studentCount: "Студенттердин саны",
-        facultiesCount: "Факультеттердин саны",
-        programsCount: "Бағдарламалардын саны",
-        teachersCount: "Мугалимдердин саны",
-        teachersWithPhD: "илимий дәрежеси бар мугалимдер",
-        missionStatement: "Уюмдун миссиясы (орус тилинде)",
-        missionStatementKg: "Уюмдун миссиясы (кыргыз тилинде)",
-        attachments: "Документтерди кошуу"
-      },
-      requiredDocuments: {
-        // ... существующие поля
-      },
-      successMessage: "Анкета долбоор катары сакталды"
-    }
-  };
 
   const handleSaveDraft = () => {
     // Логика сохранения черновика
@@ -174,28 +70,17 @@ export default function InstitutionQuestionnairePage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building2 className="h-6 w-6" />
-            {translations[language].title}
+            {t.titleQuestionnaireInstitution}
           </CardTitle>
           <CardDescription>
-            {translations[language].subtitle}
+            {t.subtitleQuestionnaireInstitution}
           </CardDescription>
         </CardHeader>
         
         <CardContent>
           <div className="flex justify-between mb-6">
             <div className="flex gap-2">
-              <Button 
-                variant={language === 'ru' ? 'default' : 'outline'}
-                onClick={() => setLanguage('ru')}
-              >
-                Рус
-              </Button>
-              <Button 
-                variant={language === 'kg' ? 'default' : 'outline'}
-                onClick={() => setLanguage('kg')}
-              >
-                Кырг
-              </Button>
+              <LanguageSwitcher/>
             </div>
             <Link href="/">
               <Button variant="outline" size="icon">
@@ -208,7 +93,7 @@ export default function InstitutionQuestionnairePage() {
             <TabsList className="grid grid-cols-5 md:grid-cols-5">
               {['general', 'contacts', 'statistics', 'mission', 'documents'].map(tab => (
                 <TabsTrigger key={tab} value={tab}>
-                  {translations[language].tabs[tab as keyof typeof translations['ru']['tabs']]}
+                  {t.tabs[tab as keyof typeof t.tabs]}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -217,36 +102,36 @@ export default function InstitutionQuestionnairePage() {
               <div className="grid gap-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input 
-                    label={translations[language].formLabels.name}
+                    label={t.formLabels.name}
                     value={formState.name}
                     onChange={e => setFormState({...formState, name: e.target.value})}
                   />
                   <Input 
-                    label={translations[language].formLabels.nameKg}
+                    label={t.formLabels.nameKg}
                     value={formState.nameKg}
                     onChange={e => setFormState({...formState, nameKg: e.target.value})}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input 
-                    label={translations[language].formLabels.address}
+                    label={t.formLabels.address}
                     value={formState.address}
                     onChange={e => setFormState({...formState, address: e.target.value})}
                   />
                   <Input 
-                    label={translations[language].formLabels.addressKg}
+                    label={t.formLabels.addressKg}
                     value={formState.addressKg}
                     onChange={e => setFormState({...formState, addressKg: e.target.value})}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input 
-                    label={translations[language].formLabels.regCertificate}
+                    label={t.formLabels.regCertificate}
                     value={formState.regCertificate}
                     onChange={e => setFormState({...formState, regCertificate: e.target.value})}
                   />
                   <Input 
-                    label={translations[language].formLabels.taxId}
+                    label={t.formLabels.taxId}
                     value={formState.taxId}
                     onChange={e => setFormState({...formState, taxId: e.target.value})}
                   />
@@ -258,17 +143,17 @@ export default function InstitutionQuestionnairePage() {
             <TabsContent value="contacts">
               <div className="grid gap-4">
                 <Input 
-                  label={translations[language].formLabels.director}
+                  label={t.formLabels.director}
                   value={formState.director}
                   onChange={e => setFormState({...formState, director: e.target.value})}
                 />
                 <Input 
-                  label={translations[language].formLabels.directorContact}
+                  label={t.formLabels.directorContact}
                   value={formState.directorContact}
                   onChange={e => setFormState({...formState, directorContact: e.target.value})}
                 />
                 <Input 
-                  label={translations[language].formLabels.website}
+                  label={t.formLabels.website}
                   value={formState.website}
                   onChange={e => setFormState({...formState, website: e.target.value})}
                 />
@@ -281,32 +166,32 @@ export default function InstitutionQuestionnairePage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <Input 
                     type="number"
-                    label={translations[language].formLabels.studentCount}
+                    label={t.formLabels.studentCount}
                     value={formState.studentCount}
                     onChange={e => setFormState({...formState, studentCount: e.target.value})}
                   />
                   <Input 
                     type="number"
-                    label={translations[language].formLabels.facultiesCount}
+                    label={t.formLabels.facultiesCount}
                     value={formState.facultiesCount}
                     onChange={e => setFormState({...formState, facultiesCount: e.target.value})}
                   />
                   <Input 
                     type="number"
-                    label={translations[language].formLabels.programsCount}
+                    label={t.formLabels.programsCount}
                     value={formState.programsCount}
                     onChange={e => setFormState({...formState, programsCount: e.target.value})}
                   />
                   <Input 
                     type="number"
-                    label={translations[language].formLabels.teachersCount}
+                    label={t.formLabels.teachersCount}
                     value={formState.teachersCount}
                     onChange={e => setFormState({...formState, teachersCount: e.target.value})}
                   />
                 </div>
                 <Input 
                   type="number"
-                  label={translations[language].formLabels.teachersWithPhD}
+                  label={t.formLabels.teachersWithPhD}
                   value={formState.teachersWithPhD}
                   onChange={e => setFormState({...formState, teachersWithPhD: e.target.value})}
                 />
@@ -317,13 +202,13 @@ export default function InstitutionQuestionnairePage() {
             <TabsContent value="mission">
               <div className="grid gap-4">
                 <Textarea 
-                  label={translations[language].formLabels.missionStatement}
+                  label={t.formLabels.missionStatement}
                   value={formState.missionStatement}
                   onChange={e => setFormState({...formState, missionStatement: e.target.value})}
                   rows={4}
                 />
                 <Textarea 
-                  label={translations[language].formLabels.missionStatementKg}
+                  label={t.formLabels.missionStatementKg}
                   value={formState.missionStatementKg}
                   onChange={e => setFormState({...formState, missionStatementKg: e.target.value})}
                   rows={4}
@@ -336,11 +221,11 @@ export default function InstitutionQuestionnairePage() {
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={handleSaveDraft}>
             <Save className="mr-2 h-4 w-4" />
-            {translations[language].saveAsDraft}
+            {t.saveAsDraft}
           </Button>
           <Button onClick={handleSubmit}>
             <Send className="mr-2 h-4 w-4" />
-            {translations[language].submit}
+            {t.submit}
           </Button>
         </CardFooter>
       </Card>

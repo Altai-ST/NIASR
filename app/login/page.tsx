@@ -1,9 +1,7 @@
-
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/registry/new-york-v4/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/registry/new-york-v4/ui/card";
@@ -13,6 +11,8 @@ import { Label } from "@/components/registry/new-york-v4/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/registry/new-york-v4/ui/select";
 import { toast } from "sonner"
 import { EyeIcon, EyeOffIcon, Globe, GraduationCap } from "lucide-react";
+import { useAppSelector } from "../hooks";
+import { selectTranslations } from "@/store/language/languageSlice";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,46 +21,8 @@ export default function LoginPage() {
   const [role, setRole] = useState("guest");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState<'ru' | 'kg'>('ru');
-  
-  const translations = {
-    ru: {
-      title: "Реестр образовательных организаций и программ ВПО Кыргызстана",
-      subtitle: "Национальное агентство по аккредитации и рейтингу в сфере образования",
-      searchPlaceholder: "Поиск по названию или коду программы...",
-      institutions: "Образовательные организации",
-      programs: "Образовательные программы",
-      institutionsCount: "Аккредитованные организации",
-      programsCount: "Аккредитованные программы",
-      questionnaire: "Заполнить анкету ВУЗа",
-      accreditation: "Подать заявку на аккредитацию",
-      viewInstitutions: "Просмотреть все организации",
-      viewPrograms: "Просмотреть все программы",
-      language: "Кыргызча",
-      popularPrograms: "Популярные направления",
-      recentlyAccredited: "Недавно аккредитованные",
-      login: "Вход в систему",
-    },
-    kg: {
-      title: "Кыргызстандын жогорку кесиптик билим берүү уюмдарынын жана программаларынын реестри",
-      subtitle: "Билим берүү чөйрөсүндөгү аккредитация жана рейтинг боюнча улуттук агенттик",
-      searchPlaceholder: "Программанын аталышы же коду боюнча издөө...",
-      institutions: "Билим берүү уюмдары",
-      programs: "Билим берүү программалары",
-      institutionsCount: "Аккредитацияланган уюмдар",
-      programsCount: "Аккредитацияланган программалар",
-      questionnaire: "ЖОЖ анкетасын толтуруу",
-      accreditation: "Аккредитацияга өтүнмө бериңиз",
-      viewInstitutions: "Бардык уюмдарды көрүү",
-      viewPrograms: "Бардык программаларды көрүү",
-      language: "Русский",
-      popularPrograms: "Популярдуу багыттар",
-      recentlyAccredited: "Жакында аккредитацияланган",
-      login: "Тутумга кирүү",
-    }
-  };
 
-  const t = translations[language];
+  const t = useAppSelector(selectTranslations);;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,11 +34,11 @@ export default function LoginPage() {
       
       // Redirect based on role
       if (role === "admin") {
-        router.push("/admin/dashboard");
+        router.push("/admin");
       } else if (role === "niars") {
         router.push("/niars/dashboard");
       } else if (role === "university") {
-        router.push("/university/dashboard");
+        router.push("/university");
       } else {
         router.push("/");
       }
@@ -93,49 +55,24 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-        <header className="bg-blue-700 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <GraduationCap size={32} />
-            <a href="/">
-              <h1 className="text-xl font-bold hidden md:block">НИАРС</h1>
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-white hover:text-white hover:bg-blue-600"
-              onClick={() => setLanguage(language === 'ru' ? 'kg' : 'ru')}
-            >
-              <Globe className="mr-2 h-4 w-4" />
-              {t.language}
-            </Button>
-            <a href="/login">
-              <Button variant="outline" className="text-white border-white hover:bg-blue-600">
-                {t.login}
-              </Button>
-            </a>
-          </div>
-        </div>
-      </header>
     <div className="flex items-center justify-center py-10 w-full">
         <Tabs defaultValue="login" className="w-3/5">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Вход</TabsTrigger>
-            <TabsTrigger value="register">Регистрация</TabsTrigger>
+            <TabsTrigger value="login">{t.loginName}</TabsTrigger>
+            <TabsTrigger value="register">{t.registrationName}</TabsTrigger>
           </TabsList>
           <TabsContent value="login">
             <Card>
               <CardHeader>
-                <CardTitle>Авторизация</CardTitle>
+                <CardTitle>{t.autorization}</CardTitle>
                 <CardDescription>
-                  Введите ваши учетные данные для входа в систему
+                  {t.titleLogin}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t.email}</Label>
                     <Input 
                       id="email" 
                       type="email" 
@@ -146,7 +83,7 @@ export default function LoginPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Пароль</Label>
+                    <Label htmlFor="password">{t.password}</Label>
                     <div className="relative">
                       <Input 
                         id="password" 
@@ -179,16 +116,16 @@ export default function LoginPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="role">Роль пользователя</Label>
+                    <Label htmlFor="role">{t.roleUser}</Label>
                     <Select value={role} onValueChange={setRole}>
                       <SelectTrigger id="role">
-                        <SelectValue placeholder="Выберите роль" />
+                        <SelectValue placeholder={t.selectRole} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="admin">Администратор</SelectItem>
-                        <SelectItem value="niars">Представитель НИАРС</SelectItem>
-                        <SelectItem value="university">Представитель ВУЗа</SelectItem>
-                        <SelectItem value="guest">Гость</SelectItem>
+                        <SelectItem value="admin">{t.admin}</SelectItem>
+                        <SelectItem value="niars">{t.niarsRep}</SelectItem>
+                        <SelectItem value="university">{t.institutionRep}</SelectItem>
+                        <SelectItem value="guest">{t.guest}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -200,36 +137,36 @@ export default function LoginPage() {
                         className="h-4 w-4 rounded border-gray-300"
                       />
                       <Label htmlFor="remember" className="text-sm font-normal">
-                        Запомнить меня
+                        {t.rememberMe}
                       </Label>
                     </div>
                     <Link 
                       href="/forgot-password"
                       className="text-sm font-medium text-primary underline-offset-4 hover:underline"
                     >
-                      Забыли пароль?
+                      {t.forgotPassword}
                     </Link>
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Вход..." : "Войти"}
+                    {isLoading ? t.loginName+"..." : t.loginLoading}
                   </Button>
                 </form>
               </CardContent>
               <CardFooter className="flex flex-wrap items-center justify-between">
                 <div className="text-sm text-gray-500">
-                  Нет аккаунта?{" "}
+                  {t.noAccount+" "}
                   <Link 
                     href="/register"
                     className="text-sm font-medium text-primary underline-offset-4 hover:underline"
                   >
-                    Зарегистрироваться
+                    {t.register}
                   </Link>
                 </div>
                 <Link 
                   href="/"
                   className="text-sm font-medium text-primary underline-offset-4 hover:underline"
                 >
-                  Вернуться на главную
+                  {t.backToHome}
                 </Link>
               </CardFooter>
             </Card>
@@ -237,39 +174,39 @@ export default function LoginPage() {
           <TabsContent value="register">
             <Card>
               <CardHeader>
-                <CardTitle>Регистрация</CardTitle>
+                <CardTitle>{t.registrationName}</CardTitle>
                 <CardDescription>
-                  Создайте новую учетную запись для доступа к системе
+                  {t.createNewUser}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
+                  <Label htmlFor="register-email">{t.email}</Label>
                   <Input id="register-email" type="email" placeholder="email@example.com" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="first-name">Имя</Label>
-                    <Input id="first-name" placeholder="Имя" />
+                    <Label htmlFor="first-name">{t.name}</Label>
+                    <Input id="first-name" placeholder={t.name} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="last-name">Фамилия</Label>
-                    <Input id="last-name" placeholder="Фамилия" />
+                    <Label htmlFor="last-name">{t.lastName}</Label>
+                    <Input id="last-name" placeholder={t.lastName} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="org-name">Организация</Label>
-                  <Input id="org-name" placeholder="Название организации" />
+                  <Label htmlFor="org-name">{t.organization}</Label>
+                  <Input id="org-name" placeholder={t.organization}/>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="register-password">Пароль</Label>
+                  <Label htmlFor="register-password">{t.password}</Label>
                   <Input id="register-password" type="password" placeholder="••••••••" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Подтвердите пароль</Label>
+                  <Label htmlFor="confirm-password">{t.repeatPassword}</Label>
                   <Input id="confirm-password" type="password" placeholder="••••••••" />
                 </div>
-                <Button className="w-full">Зарегистрироваться</Button>
+                <Button className="w-full">{t.register}</Button>
               </CardContent>
             </Card>
           </TabsContent>
